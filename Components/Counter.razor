@@ -1,0 +1,39 @@
+﻿@inherits MudComponentBase
+
+<MudGrid >
+    <MudItem xs="10" Class="my-auto">
+        <MudText
+            Width="100%"
+            Height="100%"
+            Class="px-auto"
+            Style="font-size: 100px">
+            @Count
+        </MudText>
+    </MudItem>
+    <MudItem xs="2" Class="my-auto">
+        <MudGrid>
+            <MudItem xs="12">
+                <MudIconButton Color="Color.Primary"
+                               Class="pa-3 rounded-pill"
+                               OnClick="() => Count++"
+                               Variant="Variant.Filled"
+                               Icon="@Icons.Material.Filled.Add"
+                               Size="Size.Small"
+                               aria-label="add"/>
+            </MudItem>
+            <MudItem xs="12">
+                <MudIconButton Color="Color.Error"
+                               Class="pa-3 rounded-pill"
+                               OnClick="() => Count--"
+                               Variant="Variant.Filled"
+                               Icon="@Icons.Material.Filled.Remove"
+                               Size="Size.Small"
+                               aria-label="subtract"/>
+            </MudItem>
+        </MudGrid>
+    </MudItem>
+</MudGrid>
+
+@code {
+    private int Count { get; set; } = 0;
+}
