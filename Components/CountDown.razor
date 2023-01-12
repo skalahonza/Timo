@@ -4,13 +4,24 @@
     Width="100%"
     Height="100%"
     Class="my-auto"
+    Color="@(RemainingTime > TimeSpan.Zero ? Color.Success : Color.Error)"
     Style="font-size: 35px">
     @RemainingTimeText
 </MudText>
 
 @code {
+
+    public enum CountDownPrecision
+    {
+        Days,
+        Hours,
+        Minutes,
+        Seconds
+    }
+
     private Timer? _timer;
     public DateTime StartTime { get; set; } = DateTime.Now.AddDays(3);
+    public CountDownPrecision Precision { get; set; } = CountDownPrecision.Seconds;
     public TimeSpan RemainingTime => StartTime - DateTime.Now;
 
     public string RemainingTimeText
@@ -18,10 +29,12 @@
         get
         {
             var names = new[] {"D", "H", "M", "S"};
+            var lastName = names[(int) Precision];
             var values = new[] {RemainingTime.Days, RemainingTime.Hours, RemainingTime.Minutes, RemainingTime.Seconds};
             return string.Join(' ', names
                 .Zip(values, (name, value) => (name,value))
-                .Where(x => x.value > 0)
+                .Take((int) Precision + 1)
+                .Where(x => x.value > 0 || x.name == lastName)
                 .Select(x => $"{x.value}{x.name}"));
         }
     }
