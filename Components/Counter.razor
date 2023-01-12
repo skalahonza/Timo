@@ -32,8 +32,15 @@
             </MudItem>
         </MudGrid>
     </MudItem>
+    <MudItem xs="12">
+        <MudText>@Name</MudText>
+    </MudItem>
 </MudGrid>
 
 @code {
-    private int Count { get; set; } = 0;
+    [Parameter]
+    public int Count { get; set; } = 0;
+    
+    [Parameter]
+    public string Name { get; set; } = "";
 }
