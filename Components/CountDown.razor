@@ -4,7 +4,7 @@
     Width="100%"
     Height="100%"
     Class="my-auto"
-    Color="@(RemainingTime > TimeSpan.Zero ? Color.Success : Color.Error)"
+    Color="@(Spent > Threshold ? Color.Error : Color.Success)"
     Style="font-size: 35px">
     @RemainingTimeText
 </MudText>
@@ -23,24 +23,26 @@
     }
 
     private Timer? _timer;
-    public DateTime StartTime { get; set; } = DateTime.Now.AddDays(3);
-    public CountDownPrecision Precision { get; set; } = CountDownPrecision.Seconds;
-    public TimeSpan RemainingTime => StartTime - DateTime.Now;
-    
+    public TimeSpan Spent => (StartTime - DateTime.Now).Duration();
+
     [Parameter]
     public string Name { get; set; } = "";
+    [Parameter]
+    public CountDownPrecision Precision { get; set; } = CountDownPrecision.Seconds;
+    [Parameter]
+    public TimeSpan Threshold { get; set; } = TimeSpan.FromDays(3);
+    [Parameter]
+    public DateTime StartTime { get; set; } = DateTime.Now.AddDays(-3);
 
     public string RemainingTimeText
     {
         get
         {
             var names = new[] {"D", "H", "M", "S"};
-            var lastName = names[(int) Precision];
-            var values = new[] {RemainingTime.Days, RemainingTime.Hours, RemainingTime.Minutes, RemainingTime.Seconds};
+            var values = new[] {Spent.Days, Spent.Hours, Spent.Minutes, Spent.Seconds};
             return string.Join(' ', names
                 .Zip(values, (name, value) => (name,value))
                 .Take((int) Precision + 1)
-                .Where(x => x.value > 0 || x.name == lastName)
                 .Select(x => $"{x.value}{x.name}"));
         }
     }
@@ -49,4 +51,10 @@
     {
         _timer = new Timer(_ => { StateHasChanged(); }, null, 0, 1000);
     }
+
+    public void Reset()
+    {
+        StartTime = DateTime.Now;
+    }
+
 }

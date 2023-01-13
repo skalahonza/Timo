@@ -7,7 +7,7 @@
             Height="100%"
             Class="px-auto"
             Style="font-size: 100px">
-            @Count
+            @_count
         </MudText>
     </MudItem>
     <MudItem xs="2" Class="my-auto">
@@ -15,7 +15,7 @@
             <MudItem xs="12">
                 <MudIconButton Color="Color.Primary"
                                Class="pa-3 rounded-pill"
-                               OnClick="() => Count++"
+                               OnClick="() => InitialCount++"
                                Variant="Variant.Filled"
                                Icon="@Icons.Material.Filled.Add"
                                Size="Size.Small"
@@ -24,7 +24,7 @@
             <MudItem xs="12">
                 <MudIconButton Color="Color.Error"
                                Class="pa-3 rounded-pill"
-                               OnClick="() => Count--"
+                               OnClick="@DecrementCount"
                                Variant="Variant.Filled"
                                Icon="@Icons.Material.Filled.Remove"
                                Size="Size.Small"
@@ -38,9 +38,23 @@
 </MudGrid>
 
 @code {
+    private int _count;
+    
     [Parameter]
-    public int Count { get; set; } = 0;
+    public int InitialCount { get; set; } = 0;
     
     [Parameter]
     public string Name { get; set; } = "";
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        _count = InitialCount;
+    }
+
+    public void DecrementCount()
+    {
+        _count--;
+        StateHasChanged();
+    }
 }

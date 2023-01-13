@@ -10,19 +10,20 @@
 
     <MudItem xs="12" sm="6" md="4">
         <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;">
-            <Counter Name="Remains" />
+            <Counter @ref="_cannulaCounter" InitialCount="3" Name="Remains"/>
         </MudPaper>
     </MudItem>
-    
+
     <MudItem xs="12" sm="6" md="4">
         <MudGrid>
             <MudItem xs="12">
                 <MudPaper Elevation="2" Class="pa-4">
-                    <CountDown Name="Cannula age"/>
+                    <CountDown @ref="_cannulaCountDown" Name="Cannula age"/>
                 </MudPaper>
             </MudItem>
             <MudItem xs="12">
                 <MudButton
+                    OnClick="@NewCannulaClicked"
                     Variant="Variant.Filled"
                     Color="Color.Primary"
                     Size="Size.Large"
@@ -34,3 +35,32 @@
         </MudGrid>
     </MudItem>
 </MudGrid>
+
+@code {
+    [Inject]
+    private IDialogService DialogService { get; set; } = null!;
+
+    private Counter _cannulaCounter = new();
+    private CountDown _cannulaCountDown = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+    }
+
+    public async Task NewCannulaClicked()
+    {
+        var result = await DialogService.ShowMessageBox(
+            "New cannula",
+            "Confirm that new cannula is inserted",
+            yesText: "Confirm", cancelText: "Cancel");
+
+        if (result == true)
+        {
+            _cannulaCountDown.Reset();
+            _cannulaCounter.DecrementCount();
+            StateHasChanged();
+        }
+    }
+
+}
