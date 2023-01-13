@@ -27,10 +27,13 @@
 
     [Parameter]
     public string Name { get; set; } = "";
+
     [Parameter]
     public CountDownPrecision Precision { get; set; } = CountDownPrecision.Seconds;
+
     [Parameter]
     public TimeSpan Threshold { get; set; } = TimeSpan.FromDays(3);
+
     [Parameter]
     public DateTime StartTime { get; set; } = DateTime.Now.AddDays(-3);
 
@@ -39,7 +42,13 @@
         get
         {
             var names = new[] {"D", "H", "M", "S"};
-            var values = new[] {Spent.Days, Spent.Hours, Spent.Minutes, Spent.Seconds};
+            var values = new[]
+            {
+                Spent.Days.ToString(),
+                Spent.Hours.ToString("00"),
+                Spent.Minutes.ToString("00"),
+                Spent.Seconds.ToString("00")
+            };
             return string.Join(' ', names
                 .Zip(values, (name, value) => (name,value))
                 .Take((int) Precision + 1)
