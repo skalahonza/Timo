@@ -5,12 +5,18 @@
 
 <MudGrid Justify="Justify.Center">
     <MudItem xs="12">
-        <MudText Align="Align.Center" Typo="Typo.subtitle1">Timo | The only dashboard you need</MudText>
+        <MudText Align="Align.Center" Typo="Typo.subtitle1">Timo | Dashboard for all kind of stuff</MudText>
     </MudItem>
 
     <MudItem xs="12" sm="6" md="4">
         <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;">
-            <Counter @ref="_cannulaCounter" InitialCount="3" Name="Remains"/>
+            <Counter InitialCount="8" Name="Sensors"/>
+        </MudPaper>
+    </MudItem>
+
+    <MudItem xs="12" sm="6" md="4">
+        <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;">
+            <Counter @ref="_cannulaCounter" InitialCount="3" Name="Cannulas"/>
         </MudPaper>
     </MudItem>
 
@@ -37,6 +43,7 @@
 </MudGrid>
 
 @code {
+
     [Inject]
     private IDialogService DialogService { get; set; } = null!;
 
@@ -48,7 +55,7 @@
         await base.OnInitializedAsync();
     }
 
-    public async Task NewCannulaClicked()
+    private async Task NewCannulaClicked()
     {
         var result = await DialogService.ShowMessageBox(
             "New cannula",
