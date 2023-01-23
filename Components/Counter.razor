@@ -46,7 +46,7 @@
         var parameters = new DialogParameters {{nameof(EditCountDialog.Value), Count}};
         var dialog = DialogService.Show<EditCountDialog>("Edit Count", parameters);
         var result = await dialog.Result;
-        if (!result.Cancelled)
+        if (!result.Canceled)
         {
             Count = (int) result.Data;
             await CountChanged.InvokeAsync(Count);

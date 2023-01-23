@@ -1,5 +1,6 @@
 ﻿@page "/"
 @using Timo.ViewModels
+@using Timo.Dialogs
 @inject Blazored.LocalStorage.ILocalStorageService LocalStorage
 
 <PageTitle>Timo | Dashboard</PageTitle>
@@ -40,6 +41,17 @@
                     New Cannula
                 </MudButton>
             </MudItem>
+            <MudItem xs="12">
+                <MudButton
+                    OnClick="@NewSensorClicked"
+                    Variant="Variant.Filled"
+                    Color="Color.Primary"
+                    Size="Size.Large"
+                    Class="rounded-pill"
+                    FullWidth="true">
+                    New Sensor
+                </MudButton>
+            </MudItem>
         </MudGrid>
     </MudItem>
 </MudGrid>
@@ -59,23 +71,42 @@
 
     private async Task NewCannulaClicked()
     {
-        var result = await DialogService.ShowMessageBox(
-            "New cannula",
-            "Confirm that new cannula is inserted",
-            yesText: "Confirm", cancelText: "Cancel");
-
-        if (result == true)
+        var parameters = new DialogParameters
         {
-            _viewModel.InsertCannula();
+            {nameof(InsertionDialog.Date), DateTime.Now},
+            {nameof(InsertionDialog.Text), "Confirm that new cannula is inserted"},
+        };
+        var dialog = DialogService.Show<InsertionDialog>("New cannula", parameters);
+        var result = await dialog.Result;
+        if (!result.Canceled)
+        {
+            var insertedAt = result.Data as DateTime?;
+            _viewModel.InsertCannula(insertedAt ?? DateTime.Now);
             await SaveState();
             StateHasChanged();
         }
     }
 
-    private async Task SaveState()
+    private async Task NewSensorClicked()
     {
-        await LocalStorage.SetItemAsync("state", _viewModel);
+        var parameters = new DialogParameters
+        {
+            {nameof(InsertionDialog.Date), DateTime.Now},
+            {nameof(InsertionDialog.Text), "Confirm that new sensor is inserted"},
+        };
+        var dialog = DialogService.Show<InsertionDialog>("New sensor", parameters);
+        var result = await dialog.Result;
+        if (!result.Canceled)
+        {
+            var insertedAt = result.Data as DateTime?;
+            _viewModel.InsertSensor(insertedAt ?? DateTime.Now);
+            await SaveState();
+            StateHasChanged();
+        }
     }
+
+    private async Task SaveState() =>
+        await LocalStorage.SetItemAsync("state", _viewModel);
 
     private async Task<MainViewModel> LoadState() =>
         await LocalStorage.ContainKeyAsync("state")
@@ -99,4 +130,5 @@
         _viewModel.Sensors = count;
         await SaveState();
     }
+
 }

@@ -25,18 +25,18 @@ public class MainViewModel
     /// <summary>
     /// Insert a new cannula.
     /// </summary>
-    public void InsertCannula()
+    public void InsertCannula(DateTime insertedAt)
     {
         Cannulas--;
-        LastCannulaChange = DateTime.Now;
+        LastCannulaChange = insertedAt;
     }
     
     /// <summary>
     /// Insert a new sensor.
     /// </summary>
-    public void InsertSensor()
+    public void InsertSensor(DateTime insertedAt)
     {
         Sensors--;
-        LastSensorChange = DateTime.Now;
+        LastSensorChange = insertedAt;
     }
 }

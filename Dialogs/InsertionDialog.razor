@@ -1,0 +1,37 @@
+﻿<MudDialog>
+    <DialogContent>
+        <MudText>@Text</MudText>
+        <MudDatePicker Label="Inserted at" Editable="true"
+                       Date="Date"
+                       DateChanged="Callback"
+                       Placeholder="Select Date"/>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; } = new();
+
+    [Parameter]
+    public string Text { get; set; } = "";
+
+    [Parameter]
+    public DateTime? Date { get; set; } = DateTime.Now;
+    
+    [Parameter]
+    public EventCallback<DateTime?> DateChanged { get; set; }
+
+    void Submit() => MudDialog.Close(DialogResult.Ok(Date));
+    void Cancel() => MudDialog.Cancel();
+
+    private void Callback(DateTime? obj)
+    {
+        Date = obj;
+        DateChanged.InvokeAsync(obj);
+    }
+}
