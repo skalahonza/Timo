@@ -1,5 +1,6 @@
 ﻿@page "/"
 @using Timo.ViewModels
+@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
 
 <PageTitle>Timo | Dashboard</PageTitle>
 
@@ -11,13 +12,13 @@
 
     <MudItem xs="12" sm="6" md="4">
         <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;">
-            <Counter @bind-Count="_viewModel.Sensors" Name="Sensors"/>
+            <Counter Count="_viewModel.Sensors" CountChanged="SensorsChanged" Name="Sensors"/>
         </MudPaper>
     </MudItem>
 
     <MudItem xs="12" sm="6" md="4">
         <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;">
-            <Counter @bind-Count="_viewModel.Cannulas" Name="Cannulas"/>
+            <Counter Count="_viewModel.Cannulas" CountChanged="CannulasChanged" Name="Cannulas"/>
         </MudPaper>
     </MudItem>
 
@@ -53,15 +54,7 @@
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-
-    // TODO load state
-        _viewModel = new MainViewModel
-        {
-            Cannulas = 3,
-            LastCannulaChange = DateTime.Now.AddDays(-2),
-            Sensors = 5,
-            LastSensorChange = DateTime.Now.AddDays(-7),
-        };
+        _viewModel = await LoadState();
     }
 
     private async Task NewCannulaClicked()
@@ -74,8 +67,36 @@
         if (result == true)
         {
             _viewModel.InsertCannula();
+            await SaveState();
             StateHasChanged();
         }
     }
 
+    private async Task SaveState()
+    {
+        await LocalStorage.SetItemAsync("state", _viewModel);
+    }
+
+    private async Task<MainViewModel> LoadState() =>
+        await LocalStorage.ContainKeyAsync("state")
+            ? await LocalStorage.GetItemAsync<MainViewModel>("state") ?? new MainViewModel()
+            : new MainViewModel
+            {
+                Cannulas = 3,
+                LastCannulaChange = DateTime.Now.AddDays(-2),
+                Sensors = 5,
+                LastSensorChange = DateTime.Now.AddDays(-7),
+            };
+
+    private async Task CannulasChanged(int count)
+    {
+        _viewModel.Cannulas = count;
+        await SaveState();
+    }
+
+    private async Task SensorsChanged(int count)
+    {
+        _viewModel.Sensors = count;
+        await SaveState();
+    }
 }
