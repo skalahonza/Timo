@@ -1,0 +1,21 @@
+﻿<MudDialog>
+    <DialogContent>
+        <MudNumericField @bind-Value="Value" Label="Standard" Variant="Variant.Text" Min="0"/>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; } = new();
+
+    [Parameter]
+    public int Value { get; set; }
+
+    void Submit() => MudDialog.Close(DialogResult.Ok(Value));
+    void Cancel() => MudDialog.Cancel();
+}

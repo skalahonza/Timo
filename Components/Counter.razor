@@ -1,4 +1,6 @@
-﻿@inherits MudComponentBase
+﻿@using Timo.Dialogs
+@inherits MudComponentBase
+@inject IDialogService DialogService
 
 <MudGrid Justify="Justify.SpaceBetween" Spacing="24">
     <MudItem xs="2" Class="my-auto">
@@ -7,7 +9,7 @@
             Height="100%"
             Class="px-auto"
             Style="font-size: 100px">
-            @_count
+            @Count
         </MudText>
     </MudItem>
     <MudItem xs="2" Class="my-auto">
@@ -15,20 +17,11 @@
             <MudItem xs="12">
                 <MudIconButton Color="Color.Primary"
                                Class="pa-3 rounded-pill"
-                               OnClick="() => _count++"
+                               OnClick="OpenEditDialog"
                                Variant="Variant.Filled"
-                               Icon="@Icons.Material.Filled.Add"
+                               Icon="@Icons.Material.Filled.Edit"
                                Size="Size.Small"
                                aria-label="add"/>
-            </MudItem>
-            <MudItem xs="12">
-                <MudIconButton Color="Color.Error"
-                               Class="pa-3 rounded-pill"
-                               OnClick="@DecrementCount"
-                               Variant="Variant.Filled"
-                               Icon="@Icons.Material.Filled.Remove"
-                               Size="Size.Small"
-                               aria-label="subtract"/>
             </MudItem>
         </MudGrid>
     </MudItem>
@@ -38,23 +31,26 @@
 </MudGrid>
 
 @code {
-    private int _count;
+
+    [Parameter]
+    public int Count { get; set; } = 0;
     
     [Parameter]
-    public int InitialCount { get; set; } = 0;
-    
+    public EventCallback<int> CountChanged { get; set; }
+
     [Parameter]
     public string Name { get; set; } = "";
 
-    protected override void OnInitialized()
+    private async Task OpenEditDialog()
     {
-        base.OnInitialized();
-        _count = InitialCount;
+        var parameters = new DialogParameters {{nameof(EditCountDialog.Value), Count}};
+        var dialog = DialogService.Show<EditCountDialog>("Edit Count", parameters);
+        var result = await dialog.Result;
+        if (!result.Cancelled)
+        {
+            Count = (int) result.Data;
+            await CountChanged.InvokeAsync(Count);
+        }
     }
 
-    public void DecrementCount()
-    {
-        _count--;
-        StateHasChanged();
-    }
 }

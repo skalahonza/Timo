@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using Timo.ViewModels
 
 <PageTitle>Timo | Dashboard</PageTitle>
 
@@ -10,13 +11,13 @@
 
     <MudItem xs="12" sm="6" md="4">
         <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;">
-            <Counter InitialCount="8" Name="Sensors"/>
+            <Counter @bind-Count="_viewModel.Sensors" Name="Sensors"/>
         </MudPaper>
     </MudItem>
 
     <MudItem xs="12" sm="6" md="4">
         <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;">
-            <Counter @ref="_cannulaCounter" InitialCount="3" Name="Cannulas"/>
+            <Counter @bind-Count="_viewModel.Cannulas" Name="Cannulas"/>
         </MudPaper>
     </MudItem>
 
@@ -24,7 +25,7 @@
         <MudGrid>
             <MudItem xs="12">
                 <MudPaper Elevation="2" Class="pa-4">
-                    <CountDown @ref="_cannulaCountDown" Name="Cannula age"/>
+                    <CountDown StartTime="_viewModel.LastCannulaChange" Name="Cannula age"/>
                 </MudPaper>
             </MudItem>
             <MudItem xs="12">
@@ -47,12 +48,20 @@
     [Inject]
     private IDialogService DialogService { get; set; } = null!;
 
-    private Counter _cannulaCounter = new();
-    private CountDown _cannulaCountDown = new();
+    private MainViewModel _viewModel = new();
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
+
+    // TODO load state
+        _viewModel = new MainViewModel
+        {
+            Cannulas = 3,
+            LastCannulaChange = DateTime.Now.AddDays(-2),
+            Sensors = 5,
+            LastSensorChange = DateTime.Now.AddDays(-7),
+        };
     }
 
     private async Task NewCannulaClicked()
@@ -64,8 +73,7 @@
 
         if (result == true)
         {
-            _cannulaCountDown.Reset();
-            _cannulaCounter.DecrementCount();
+            _viewModel.InsertCannula();
             StateHasChanged();
         }
     }
