@@ -2,9 +2,10 @@
     <DialogContent>
         <MudText>@Text</MudText>
         <MudDatePicker Label="Inserted at" Editable="true"
-                       Date="Date"
-                       DateChanged="Callback"
+                       @bind-Date="_date"
                        Placeholder="Select Date"/>
+        <MudTimePicker Label="24 hours (editable)" Editable="true"
+                       @bind-Time="_time"/>
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>
@@ -13,6 +14,9 @@
 </MudDialog>
 
 @code {
+    private DateTime? _date = DateTime.Now;
+
+    private TimeSpan? _time = DateTime.Now.TimeOfDay;
 
     [CascadingParameter]
     MudDialogInstance MudDialog { get; set; } = new();
@@ -20,18 +24,12 @@
     [Parameter]
     public string Text { get; set; } = "";
 
-    [Parameter]
-    public DateTime? Date { get; set; } = DateTime.Now;
-    
-    [Parameter]
-    public EventCallback<DateTime?> DateChanged { get; set; }
+    void Submit()
+    {
+        var dateAndTime = _date?.Date.Add(_time ?? TimeSpan.Zero);
+        MudDialog.Close(DialogResult.Ok(dateAndTime));
+    }
 
-    void Submit() => MudDialog.Close(DialogResult.Ok(Date));
     void Cancel() => MudDialog.Cancel();
 
-    private void Callback(DateTime? obj)
-    {
-        Date = obj;
-        DateChanged.InvokeAsync(obj);
-    }
 }

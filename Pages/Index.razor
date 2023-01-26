@@ -57,7 +57,6 @@
     {
         var parameters = new DialogParameters
         {
-            {nameof(InsertionDialog.Date), DateTime.Now},
             {nameof(InsertionDialog.Text), "Confirm that new cannula is inserted"},
         };
         var dialog = DialogService.Show<InsertionDialog>("New cannula", parameters);
@@ -75,7 +74,6 @@
     {
         var parameters = new DialogParameters
         {
-            {nameof(InsertionDialog.Date), DateTime.Now},
             {nameof(InsertionDialog.Text), "Confirm that new sensor is inserted"},
         };
         var dialog = DialogService.Show<InsertionDialog>("New sensor", parameters);
