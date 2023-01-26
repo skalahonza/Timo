@@ -13,13 +13,19 @@
 
     <MudItem xs="12" sm="6" md="4">
         <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;">
-            <Counter Count="_viewModel.Sensors" CountChanged="SensorsChanged" Name="Sensors"/>
+            <Counter Count="_viewModel.Sensors" 
+                     CountChanged="SensorsChanged"
+                     OnAction="NewSensorClicked"
+                     Name="Sensors"/>
         </MudPaper>
     </MudItem>
 
     <MudItem xs="12" sm="6" md="4">
         <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;">
-            <Counter Count="_viewModel.Cannulas" CountChanged="CannulasChanged" Name="Cannulas"/>
+            <Counter Count="_viewModel.Cannulas" 
+                     CountChanged="CannulasChanged"
+                     OnAction="NewCannulaClicked"
+                     Name="Cannulas"/>
         </MudPaper>
     </MudItem>
 
@@ -29,28 +35,6 @@
                 <MudPaper Elevation="2" Class="pa-4">
                     <CountDown StartTime="_viewModel.LastCannulaChange" Name="Cannula age"/>
                 </MudPaper>
-            </MudItem>
-            <MudItem xs="12">
-                <MudButton
-                    OnClick="@NewCannulaClicked"
-                    Variant="Variant.Filled"
-                    Color="Color.Primary"
-                    Size="Size.Large"
-                    Class="rounded-pill"
-                    FullWidth="true">
-                    New Cannula
-                </MudButton>
-            </MudItem>
-            <MudItem xs="12">
-                <MudButton
-                    OnClick="@NewSensorClicked"
-                    Variant="Variant.Filled"
-                    Color="Color.Primary"
-                    Size="Size.Large"
-                    Class="rounded-pill"
-                    FullWidth="true">
-                    New Sensor
-                </MudButton>
             </MudItem>
         </MudGrid>
     </MudItem>

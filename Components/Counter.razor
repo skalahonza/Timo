@@ -23,6 +23,15 @@
                                Size="Size.Small"
                                aria-label="add"/>
             </MudItem>
+            <MudItem xs="12">
+                <MudIconButton Color="Color.Secondary"
+                               Class="pa-3 rounded-pill"
+                               OnClick="OnActionButtonClicked"
+                               Variant="Variant.Filled"
+                               Icon="@Icons.Material.Filled.Adjust"
+                               Size="Size.Small"
+                               aria-label="add"/>
+            </MudItem>
         </MudGrid>
     </MudItem>
     <MudItem xs="12">
@@ -34,9 +43,12 @@
 
     [Parameter]
     public int Count { get; set; } = 0;
-    
+
     [Parameter]
     public EventCallback<int> CountChanged { get; set; }
+    
+    [Parameter]
+    public EventCallback OnAction { get; set; }
 
     [Parameter]
     public string Name { get; set; } = "";
@@ -52,5 +64,8 @@
             await CountChanged.InvokeAsync(Count);
         }
     }
+
+    private async Task OnActionButtonClicked() => 
+        await OnAction.InvokeAsync();
 
 }
