@@ -49,7 +49,7 @@
       "url": "_framework\/icudt.dat"
     },
     {
-      "hash": "sha256-FakXqyEVbQRffaMrFpz51\/XjBT+d2ysZzGcpr4\/M6RM=",
+      "hash": "sha256-9rgJMFaw4WPf8A3GMcXlQRC+3IsY\/WVQkSSGH3Fvbqg=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -57,7 +57,7 @@
       "url": "_framework\/Blazored.LocalStorage.dll"
     },
     {
-      "hash": "sha256-AiDtxn9IpxZ2Ya8OkNjrJVVTipHHpCzg2FTmoJ6\/3W4=",
+      "hash": "sha256-N0m+7+iwfeZ6MgrEbFQdBUrTJBV0yMi+E\/AijhZ6WOI=",
       "url": "_framework\/Microsoft.AspNetCore.Components.dll"
     },
     {
@@ -213,7 +213,7 @@
       "url": "_framework\/System.Threading.dll"
     },
     {
-      "hash": "sha256-Vl16L5k1iF54lB0v4mnHKSMtoCxLfbRwtjCWxX1iPms=",
+      "hash": "sha256-eWkZC44wo6pCdRTdCQ3uzag6sC2gdMWhM2ckBRmnRvc=",
       "url": "_framework\/Timo.dll"
     },
     {
@@ -225,5 +225,5 @@
       "url": "_content\/MudBlazor\/MudBlazor.min.js"
     }
   ],
-  "version": "KcgGr23M"
+  "version": "VA6jQOfK"
 };
