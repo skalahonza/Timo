@@ -12,7 +12,9 @@
                  OnAction="NewSensorClicked"
                  Name="Sensors"/>
         <MudDivider />
-        <CountDown StartTime="_viewModel.LastSensorChange" Name="Sensor age"/>
+        <CountDown Threshold="TimeSpan.FromDays(10)"
+            StartTime="_viewModel.LastSensorChange" 
+            Name="Sensor age"/>
     </MudPaper>
 
     <MudPaper Elevation="2" Class="pa-4">
@@ -21,7 +23,9 @@
                  OnAction="NewCannulaClicked"
                  Name="Cannulas"/>
         <MudDivider />
-        <CountDown StartTime="_viewModel.LastCannulaChange" Name="Cannula age"/>
+        <CountDown Threshold="TimeSpan.FromDays(3).Add(TimeSpan.FromHours(12))"
+            StartTime="_viewModel.LastCannulaChange" 
+            Name="Cannula age"/>
     </MudPaper>
 </MudStack>
 
