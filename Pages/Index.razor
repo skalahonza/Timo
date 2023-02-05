@@ -11,6 +11,8 @@
                  CountChanged="SensorsChanged"
                  OnAction="NewSensorClicked"
                  Name="Sensors"/>
+        <MudDivider />
+        <CountDown StartTime="_viewModel.LastSensorChange" Name="Sensor age"/>
     </MudPaper>
 
     <MudPaper Elevation="2" Class="pa-4">
@@ -18,9 +20,7 @@
                  CountChanged="CannulasChanged"
                  OnAction="NewCannulaClicked"
                  Name="Cannulas"/>
-    </MudPaper>
-
-    <MudPaper Elevation="2" Class="pa-4">
+        <MudDivider />
         <CountDown StartTime="_viewModel.LastCannulaChange" Name="Cannula age"/>
     </MudPaper>
 </MudStack>
