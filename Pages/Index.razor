@@ -5,40 +5,25 @@
 
 <PageTitle>Timo | Dashboard</PageTitle>
 
+<MudStack Justify="Justify.Center">
+    <MudPaper Elevation="2" Class="pa-4">
+        <Counter Count="_viewModel.Sensors"
+                 CountChanged="SensorsChanged"
+                 OnAction="NewSensorClicked"
+                 Name="Sensors"/>
+    </MudPaper>
 
-<MudGrid Justify="Justify.Center">
-    <MudItem xs="12">
-        <MudText Align="Align.Center" Typo="Typo.subtitle1">Timo | Dashboard for all kind of stuff</MudText>
-    </MudItem>
+    <MudPaper Elevation="2" Class="pa-4">
+        <Counter Count="_viewModel.Cannulas"
+                 CountChanged="CannulasChanged"
+                 OnAction="NewCannulaClicked"
+                 Name="Cannulas"/>
+    </MudPaper>
 
-    <MudItem xs="12" sm="6" md="4">
-        <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;">
-            <Counter Count="_viewModel.Sensors" 
-                     CountChanged="SensorsChanged"
-                     OnAction="NewSensorClicked"
-                     Name="Sensors"/>
-        </MudPaper>
-    </MudItem>
-
-    <MudItem xs="12" sm="6" md="4">
-        <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;">
-            <Counter Count="_viewModel.Cannulas" 
-                     CountChanged="CannulasChanged"
-                     OnAction="NewCannulaClicked"
-                     Name="Cannulas"/>
-        </MudPaper>
-    </MudItem>
-
-    <MudItem xs="12" sm="6" md="4">
-        <MudGrid>
-            <MudItem xs="12">
-                <MudPaper Elevation="2" Class="pa-4">
-                    <CountDown StartTime="_viewModel.LastCannulaChange" Name="Cannula age"/>
-                </MudPaper>
-            </MudItem>
-        </MudGrid>
-    </MudItem>
-</MudGrid>
+    <MudPaper Elevation="2" Class="pa-4">
+        <CountDown StartTime="_viewModel.LastCannulaChange" Name="Cannula age"/>
+    </MudPaper>
+</MudStack>
 
 @code {
 
