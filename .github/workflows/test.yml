@@ -2,6 +2,9 @@ name: Test
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - master
 
 jobs:     
   healthcheck:
@@ -13,9 +16,15 @@ jobs:
         uses: actions/github-script@v5
         with:
           script: |
-            let http = require('@actions/http-client');
-            const httpClient = new http.HttpClient('healthcheck');
-            const response = await httpClient.get('https://mildblue.slp.blue/healthz');
-            if (response.message.statusCode != 200) {
-              core.setFailed('Health check failed');
+            const core = require('@actions/core');
+            const http = require('@actions/http-client');
+
+            async function run() {
+              const httpClient = new http.HttpClient('healthcheck');
+              const response = await httpClient.get('https://mildblue.slp.blue/healthz');
+              if (response.message.statusCode != 200) {
+                core.setFailed('Health check failed');
+              }
             }
+
+            run();
