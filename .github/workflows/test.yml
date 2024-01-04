@@ -17,8 +17,8 @@ jobs:
         uses: actions/github-script@v5
         with:
           script: |
-            const core = require('@actions/core');
-            const http = require('@actions/http-client');
+            let core = require('@actions/core');
+            let http = require('@actions/http-client');
             const httpClient = new http.HttpClient('healthcheck');
             const response = await httpClient.get('https://mildblue.slp.blue/healthz');
             if (response.message.statusCode != 200) {
