@@ -6,24 +6,23 @@ on:
     branches:
       - main
 
-jobs:     
+jobs:
   healthcheck:
     name: 'Mild Blue Health Check'
     runs-on: ubuntu-latest
-    steps:        
+    steps:
       - name: Check health
         id: healthcheck
         uses: actions/github-script@v5
         with:
           script: |
-            const http = require('@actions/http-client');
-            
             async function run() {
-              const httpClient = new http.HttpClient('healthcheck');
-              const response = await httpClient.get('https://mildblue.slp.blue/healthz');
-              if (response.message.statusCode != 200) {
-                core.setFailed('Health check failed');
+              const response = await fetch('https://mildblue.slp.blue/healthz');
+              if (response.status != 200) {
+                throw new Error('Health check failed with status: ' + response.status);
               }
             }
 
-            run();
+            run().catch(error => {
+              core.setFailed(error.message);
+            });
