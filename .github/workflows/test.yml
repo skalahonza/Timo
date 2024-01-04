@@ -1,5 +1,4 @@
-name: Production release
-# Releases new docker images and redeploys all AWS ECS services
+name: Test
 
 on:
   workflow_dispatch:
@@ -8,16 +7,12 @@ jobs:
   healthcheck:
     name: 'Mild Blue Health Check'
     runs-on: ubuntu-latest
-    steps:
-      - name: Wait for 60 seconds
-        run: sleep 60
-        
+    steps:        
       - name: Check health
         id: healthcheck
         uses: actions/github-script@v5
         with:
           script: |
-            let core = require('@actions/core');
             let http = require('@actions/http-client');
             const httpClient = new http.HttpClient('healthcheck');
             const response = await httpClient.get('https://mildblue.slp.blue/healthz');
