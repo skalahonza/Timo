@@ -12,17 +12,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check health
-        id: healthcheck
-        uses: actions/github-script@v5
-        with:
-          script: |
-            async function run() {
-              const response = await fetch('https://mildblue.slp.blue/healthz');
-              if (response.status != 200) {
-                throw new Error('Health check failed with status: ' + response.status);
-              }
-            }
-
-            run().catch(error => {
-              core.setFailed(error.message);
-            });
+        run: curl -f "https://mildblue.slp.blue/healthz"
