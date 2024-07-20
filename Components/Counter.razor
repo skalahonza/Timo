@@ -41,31 +41,27 @@
 
 @code {
 
-    [Parameter]
-    public int Count { get; set; } = 0;
+    [Parameter] public int Count { get; set; } = 0;
 
-    [Parameter]
-    public EventCallback<int> CountChanged { get; set; }
-    
-    [Parameter]
-    public EventCallback OnAction { get; set; }
+    [Parameter] public EventCallback<int> CountChanged { get; set; }
 
-    [Parameter]
-    public string Name { get; set; } = "";
+    [Parameter] public EventCallback OnAction { get; set; }
+
+    [Parameter] public string Name { get; set; } = "";
 
     private async Task OpenEditDialog()
     {
-        var parameters = new DialogParameters {{nameof(EditCountDialog.Value), Count}};
+        var parameters = new DialogParameters { { nameof(EditCountDialog.Value), Count } };
         var dialog = DialogService.Show<EditCountDialog>("Edit Count", parameters);
         var result = await dialog.Result;
-        if (!result.Canceled)
+        if (result is not null && !result.Canceled && result.Data is not null)
         {
-            Count = (int) result.Data;
+            Count = (int)result.Data;
             await CountChanged.InvokeAsync(Count);
         }
     }
 
-    private async Task OnActionButtonClicked() => 
+    private async Task OnActionButtonClicked() =>
         await OnAction.InvokeAsync();
 
 }

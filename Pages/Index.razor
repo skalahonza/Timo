@@ -1,6 +1,6 @@
 ﻿@page "/"
-@using Timo.ViewModels
 @using Timo.Dialogs
+@using Timo.ViewModels
 @inject Blazored.LocalStorage.ILocalStorageService LocalStorage
 
 <PageTitle>Timo | Dashboard</PageTitle>
@@ -11,10 +11,10 @@
                  CountChanged="SensorsChanged"
                  OnAction="NewSensorClicked"
                  Name="Sensors"/>
-        <MudDivider />
+        <MudDivider/>
         <CountDown Threshold="TimeSpan.FromDays(10)"
-            StartTime="_viewModel.LastSensorChange" 
-            Name="Sensor age"/>
+                   StartTime="_viewModel.LastSensorChange"
+                   Name="Sensor age"/>
     </MudPaper>
 
     <MudPaper Elevation="2" Class="pa-4">
@@ -22,17 +22,16 @@
                  CountChanged="CannulasChanged"
                  OnAction="NewCannulaClicked"
                  Name="Cannulas"/>
-        <MudDivider />
+        <MudDivider/>
         <CountDown Threshold="TimeSpan.FromDays(3).Add(TimeSpan.FromHours(12))"
-            StartTime="_viewModel.LastCannulaChange" 
-            Name="Cannula age"/>
+                   StartTime="_viewModel.LastCannulaChange"
+                   Name="Cannula age"/>
     </MudPaper>
 </MudStack>
 
 @code {
 
-    [Inject]
-    private IDialogService DialogService { get; set; } = null!;
+    [Inject] private IDialogService DialogService { get; set; } = null!;
 
     private MainViewModel _viewModel = new();
 
@@ -46,11 +45,11 @@
     {
         var parameters = new DialogParameters
         {
-            {nameof(InsertionDialog.Text), "Confirm that new cannula is inserted"},
+            { nameof(InsertionDialog.Text), "Confirm that new cannula is inserted" },
         };
         var dialog = DialogService.Show<InsertionDialog>("New cannula", parameters);
         var result = await dialog.Result;
-        if (!result.Canceled)
+        if (result is not null && !result.Canceled)
         {
             var insertedAt = result.Data as DateTime?;
             _viewModel.InsertCannula(insertedAt ?? DateTime.Now);
@@ -63,11 +62,11 @@
     {
         var parameters = new DialogParameters
         {
-            {nameof(InsertionDialog.Text), "Confirm that new sensor is inserted"},
+            { nameof(InsertionDialog.Text), "Confirm that new sensor is inserted" },
         };
         var dialog = DialogService.Show<InsertionDialog>("New sensor", parameters);
         var result = await dialog.Result;
-        if (!result.Canceled)
+        if (result is not null && !result.Canceled)
         {
             var insertedAt = result.Data as DateTime?;
             _viewModel.InsertSensor(insertedAt ?? DateTime.Now);
