@@ -52,7 +52,7 @@
     private async Task OpenEditDialog()
     {
         var parameters = new DialogParameters { { nameof(EditCountDialog.Value), Count } };
-        var dialog = DialogService.Show<EditCountDialog>("Edit Count", parameters);
+        var dialog = await DialogService.ShowAsync<EditCountDialog>("Edit Count", parameters);
         var result = await dialog.Result;
         if (result is not null && !result.Canceled && result.Data is not null)
         {

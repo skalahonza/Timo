@@ -47,7 +47,7 @@
         {
             { nameof(InsertionDialog.Text), "Confirm that new cannula is inserted" },
         };
-        var dialog = DialogService.Show<InsertionDialog>("New cannula", parameters);
+        var dialog = await DialogService.ShowAsync<InsertionDialog>("New cannula", parameters);
         var result = await dialog.Result;
         if (result is not null && !result.Canceled)
         {
@@ -64,7 +64,7 @@
         {
             { nameof(InsertionDialog.Text), "Confirm that new sensor is inserted" },
         };
-        var dialog = DialogService.Show<InsertionDialog>("New sensor", parameters);
+        var dialog = await DialogService.ShowAsync<InsertionDialog>("New sensor", parameters);
         var result = await dialog.Result;
         if (result is not null && !result.Canceled)
         {
