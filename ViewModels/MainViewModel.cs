@@ -3,6 +3,11 @@
 public class MainViewModel
 {
     /// <summary>
+    /// Number of available cartridges.
+    /// </summary>
+    public int Cartridges { get; set; }
+    
+    /// <summary>
     /// Number of available cannulas.
     /// </summary>
     public int Cannulas { get; set; }
@@ -38,5 +43,16 @@ public class MainViewModel
     {
         Sensors--;
         LastSensorChange = insertedAt;
+    }
+    
+    /// <summary>
+    /// Register that a cartridge has been inserted and reduce available stock.
+    /// </summary>
+    public void InsertCartridge()
+    {
+        if (Cartridges > 0)
+        {
+            Cartridges--;
+        }
     }
 }

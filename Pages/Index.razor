@@ -27,6 +27,13 @@
                    StartTime="_viewModel.LastCannulaChange"
                    Name="Cannula age"/>
     </MudPaper>
+    
+    <MudPaper Elevation="2" Class="pa-4">
+        <Counter Count="_viewModel.Cartridges"
+                 CountChanged="CartridgesChanged"
+                 OnAction="NewCartridgeClicked"
+                 Name="Cartridges"/>
+    </MudPaper>
 </MudStack>
 
 @code {
@@ -74,6 +81,22 @@
             StateHasChanged();
         }
     }
+    
+    private async Task NewCartridgeClicked()
+    {
+        var parameters = new DialogParameters
+        {
+            { nameof(InsertionDialog.Text), "Confirm that new cartridge has been inserted" },
+        };
+        var dialog = await DialogService.ShowAsync<InsertionDialog>("New cartridge", parameters);
+        var result = await dialog.Result;
+        if (result is not null && !result.Canceled)
+        {
+            _viewModel.InsertCartridge();
+            await SaveState();
+            StateHasChanged();
+        }
+    }
 
     private async Task SaveState() =>
         await LocalStorage.SetItemAsync("state", _viewModel);
@@ -83,6 +106,7 @@
             ? await LocalStorage.GetItemAsync<MainViewModel>("state") ?? new MainViewModel()
             : new MainViewModel
             {
+                Cartridges = 6,
                 Cannulas = 3,
                 LastCannulaChange = DateTime.Now.AddDays(-2),
                 Sensors = 5,
@@ -91,13 +115,19 @@
 
     private async Task CannulasChanged(int count)
     {
-        _viewModel.Cannulas = count;
+        _viewModel.Cannulas = Math.Max(0, count);
         await SaveState();
     }
 
     private async Task SensorsChanged(int count)
     {
-        _viewModel.Sensors = count;
+        _viewModel.Sensors = Math.Max(0, count);
+        await SaveState();
+    }
+    
+    private async Task CartridgesChanged(int count)
+    {
+        _viewModel.Cartridges = Math.Max(0, count);
         await SaveState();
     }
 
