@@ -46,10 +46,13 @@ public class MainViewModel
     }
     
     /// <summary>
-    /// Insert a new cartridge.
+    /// Register that a cartridge has been inserted and reduce available stock.
     /// </summary>
     public void InsertCartridge()
     {
-        Cartridges--;
+        if (Cartridges > 0)
+        {
+            Cartridges--;
+        }
     }
 }

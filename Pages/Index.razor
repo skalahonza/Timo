@@ -86,7 +86,7 @@
     {
         var parameters = new DialogParameters
         {
-            { nameof(InsertionDialog.Text), "Confirm that new cartridge is inserted" },
+            { nameof(InsertionDialog.Text), "Confirm that new cartridge has been inserted" },
         };
         var dialog = await DialogService.ShowAsync<InsertionDialog>("New cartridge", parameters);
         var result = await dialog.Result;
@@ -115,19 +115,19 @@
 
     private async Task CannulasChanged(int count)
     {
-        _viewModel.Cannulas = count;
+        _viewModel.Cannulas = Math.Max(0, count);
         await SaveState();
     }
 
     private async Task SensorsChanged(int count)
     {
-        _viewModel.Sensors = count;
+        _viewModel.Sensors = Math.Max(0, count);
         await SaveState();
     }
     
     private async Task CartridgesChanged(int count)
     {
-        _viewModel.Cartridges = count;
+        _viewModel.Cartridges = Math.Max(0, count);
         await SaveState();
     }
 
