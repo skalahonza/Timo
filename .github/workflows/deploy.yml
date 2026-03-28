@@ -10,7 +10,7 @@ jobs:
     # use ubuntu-latest image to run steps on
     runs-on: ubuntu-latest
     steps:
-    # uses GitHub's checkout action to check out code form the master branch
+    # uses GitHub's checkout action to check out code from the master branch
     - uses: actions/checkout@v6
     
     # sets up .NET Core SDK
