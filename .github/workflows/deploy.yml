@@ -11,11 +11,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     # uses GitHub's checkout action to check out code form the master branch
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v6
     
     # sets up .NET Core SDK
     - name: Setup .NET Core SDK
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v5
       with:
         dotnet-version: 8.0.x
 
